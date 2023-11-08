@@ -105,6 +105,7 @@ my_DB.insert(table5)
 my_table1 = my_DB.search('cities')
 my_table3 = my_DB.search("players")
 my_table4 = my_DB.search("teams")
+my_table5 = my_DB.search("titanic")
 my_table4_filtered_top_ten = my_table4.filter(lambda x: int(x["ranking"]) <= 10)
 print(f"top ten teams = {my_table4_filtered_top_ten.aggregate(lambda x: sum(x) / len(x), 'games'):.3f}")
 my_table4_filtered_below_ten = my_table4.filter(lambda x: int(x["ranking"]) > 10)
@@ -113,6 +114,21 @@ my_table3_filtered_passed_forward = my_table3.filter(lambda x : x["position"] ==
 print(f"avg_forward_passes = {my_table3_filtered_passed_forward.aggregate(lambda x: sum(x) / len(x), 'passes'):.3f}")
 my_table3_filtered_passed_midfield = my_table3.filter(lambda x: x["position"] == "midfielder")
 print(f"avg_midfielder_passes = {my_table3_filtered_passed_midfield.aggregate(lambda x: sum(x) / len(x), 'passes'):.3f}")
+my_table5_filtered_first = my_table5.filter(lambda x: int(x["class"]) == 1)
+my_table5_filtered_third = my_table5.filter(lambda x: int(x["class"]) == 3)
+my_table5_filtered_male  = my_table5.filter(lambda x: x["gender"] == "M")
+my_table5_filtered_male_survival = my_table5.filter(lambda x : x["gender"] == "M").filter(lambda x : x["survived"] == "yes")
+my_table5_filtered_female = my_table5.filter(lambda x : x["gender"] == "F")
+my_table5_filtered_female_sur = my_table5.filter(lambda x: x["gender"] == "F").filter(lambda x : x["survived"] == "yes")
+
+
+
+print(f"avg_fare_first = {my_table5_filtered_first.aggregate(lambda x: sum(x) / len(x), 'fare'):.3f}")
+print(f"avg_fare_third = {my_table5_filtered_third.aggregate(lambda x: sum(x) / len(x), 'fare'):.3f}")
+
+print(f"survival men = {(len(my_table5_filtered_male_survival.table) / len(my_table5_filtered_male.table)) * 100}")
+print(f"survival female = {(len(my_table5_filtered_female_sur.table) / len(my_table5_filtered_female.table)) * 100}")
+
 
 
 my_table3_filtered = my_table3.filter(lambda x : "ia" in x["team"]).filter(lambda x : int(x["minutes"]) < 200).filter(lambda x : int(x["passes"]) > 100)
