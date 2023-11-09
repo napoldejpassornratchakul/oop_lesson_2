@@ -122,15 +122,15 @@ my_table5_filtered_female = my_table5.filter(lambda x : x["gender"] == "F")
 my_table5_filtered_female_sur = my_table5.filter(lambda x: x["gender"] == "F").filter(lambda x : x["survived"] == "yes")
 
 
-
 print(f"avg_fare_first = {my_table5_filtered_first.aggregate(lambda x: sum(x) / len(x), 'fare'):.3f}")
 print(f"avg_fare_third = {my_table5_filtered_third.aggregate(lambda x: sum(x) / len(x), 'fare'):.3f}")
 
 print(f"survival men = {(len(my_table5_filtered_male_survival.table) / len(my_table5_filtered_male.table)) * 100}")
 print(f"survival female = {(len(my_table5_filtered_female_sur.table) / len(my_table5_filtered_female.table)) * 100}")
 
+my_table_fil_male_em = my_table5.filter(lambda x: x["gender"] == "M").filter(lambda x : x["embarked"] == "Southampton")
 
-
+print(f"Total number male who embarked southampton = {len(my_table_fil_male_em.table)}")
 my_table3_filtered = my_table3.filter(lambda x : "ia" in x["team"]).filter(lambda x : int(x["minutes"]) < 200).filter(lambda x : int(x["passes"]) > 100)
 print(my_table3_filtered.select(["surname","team","position"]))
 
