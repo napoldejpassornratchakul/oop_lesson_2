@@ -71,13 +71,25 @@ class Table:
             if condition(item1):
                 filtered_table.table.append(item1)
         return filtered_table
-    
+
+    def __is_float(self, element):
+        if element is None:
+            return False
+        try:
+            float(element)
+            return True
+        except ValueError:
+            return False
+
     def aggregate(self, function, aggregation_key):
         temps = []
         for item1 in self.table:
-            temps.append(float(item1[aggregation_key]))
+            if self.__is_float(item1[aggregation_key]):
+                temps.append(float(item1[aggregation_key]))
+            else:
+                temps.append(item1[aggregation_key])
         return function(temps)
-    
+
     def select(self, attributes_list):
         temps = []
         for item1 in self.table:
@@ -87,6 +99,23 @@ class Table:
                     dict_temp[key] = item1[key]
             temps.append(dict_temp)
         return temps
+
+    def gen_comb_list(self,list_set):
+        if len(list_set) == 1:
+            main_list = []
+            for i in list_set[0]:
+                temp = []
+                temp.append(i)
+                main_list.append(temp)
+            return main_list
+        else:
+            main_list = []
+            for i in list_set[0]:
+                remain_list = self.gen_comb_list(list_set[1:])
+                for j in remain_list:
+                    main_list.append([i] + j)
+
+            return main_list
 
     def __str__(self):
         return self.table_name + ':' + str(self.table)
